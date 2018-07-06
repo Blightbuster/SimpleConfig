@@ -6,12 +6,11 @@ class Config
 {
     public string Path;
     public string Section;
-
+    
     [DllImport("kernel32")]
     private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
     [DllImport("kernel32")]
     private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
 
     public Config(string configPath)
     {
@@ -20,7 +19,7 @@ class Config
 
     public void WriteString(string key, string value)
     {
-        WritePrivateProfileString(Section, key.ToLower(), value, this.Path);
+        WritePrivateProfileString(Section, key.ToLower(), value, Path);
     }
 
     public void WriteInt(string key, int value)
@@ -30,7 +29,7 @@ class Config
 
     public void WriteFloat(string key, float value)
     {
-        WriteString(key, value.ToString());
+        WriteString(key, value.ToString(CultureInfo.InvariantCulture));
     }
 
     public void WriteBool(string key, bool value)
@@ -42,11 +41,11 @@ class Config
     {
         try
         {
-            StringBuilder temp = new StringBuilder(255);
-            GetPrivateProfileString(Section, key.ToLower(), "", temp, 255, this.Path);
+            var temp = new StringBuilder(255);
+            GetPrivateProfileString(Section, key.ToLower(), "", temp, 255, Path);
             return temp.ToString();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return defaultValue;
         }
@@ -56,9 +55,9 @@ class Config
     {
         try
         {
-            return Int32.Parse(ReadString(key));
+            return int.Parse(ReadString(key));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return defaultValue;
         }
@@ -70,7 +69,7 @@ class Config
         {
             return float.Parse(ReadString(key));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return defaultValue;
         }
@@ -82,7 +81,7 @@ class Config
         {
             return bool.Parse(ReadString(key));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return defaultValue;
         }
