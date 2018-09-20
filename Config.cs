@@ -12,9 +12,10 @@ class Config
     [DllImport("kernel32")]
     private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-    public Config(string configPath)
+    public Config(string configPath, string section = "default")
     {
         Path = configPath;
+        Section = section;
     }
 
     public void WriteString(string key, string value)
