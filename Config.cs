@@ -44,7 +44,7 @@ class Config
         try
         {
             var temp = new StringBuilder(255);
-            GetPrivateProfileString(Section, key.ToLower(), "", temp, 255, Path);
+            GetPrivateProfileString(Section, key.ToLower(), defaultValue, temp, 255, Path);
             return temp.ToString();
         }
         catch (Exception)
